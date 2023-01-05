@@ -1,0 +1,1 @@
+web: gunicorn uas.wsgi --log-file -

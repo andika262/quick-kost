@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .leaflet-container {
+
+        height: 500px;
+        width: 600px;
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+
+<!-- Page Header-->
+<header class="masthead">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h2>Tambahkan Data Kostan</h2>
+                    <div class="row height d-flex justify-content-center align-items-center">
+                        <div class="col">
+                            <div class="alamat">
+                                <input type="text" class="form-control form-input" id="address"
+                                    placeholder="Search anything...">
+                                <span class="left-pan"><i class="fa fa-search"></i></span>
+                                <br>
+                                <input class="btn btn-primary" type="submit" value="Cari" style="border-radius: 10px;"
+                                    onclick="findAddresses()">
+                                <div id="addresses"></div><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="map" class="map" style="width: 100%;"></div>
+</header>
+<h2 style="text-align: center;">Tambahkan Data Kostan</h2>
+{% if pesan %}
+<div class="alert alert-success" style="text-align:center ;"> {{pesan}}</div>
+{% endif %}
+<div class="container">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="myform">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="d-grid" style="margin-bottom: 20px;">
+                        <button type="submit" class="btn btn-outline-success" id="submit"
+                            style="border-radius: 10px;">SUBMIT</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //map
+const map = L.map('map').setView([-6.12796, 106.1494842], 13);
+
+const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+const marker = L.marker([-6.12796, 106.1494842]).addTo(map)
+    .bindPopup('<b>Hello world!</b><br />I am a popup.').openPopup();
+
+const popup = L.popup()
+    .setLatLng([-6.12796, 106.1494842])
+    .setContent('I am a standalone popup.')
+    .openOn(map);
+
+function onMapClick(e) {
+    popup
+        .setLatLng(e.latlng)
+        .setContent(`You clicked the map at ${e.latlng.toString()}`)
+        .openOn(map);
+}
+
+map.on('click', onMapClick);
+</script>
+
+{% endblock %}

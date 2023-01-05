@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .leaflet-container {
+        height: 400px;
+        width: 600px;
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+<!-- Page Header-->
+<header class="masthead">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h2>Find Your Dream Kost!</h2>
+                    <span class="subheading">Tunggu apa lagi cari kostan impian anda!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Main Content-->
+<div id="map" class="map" style="width: 100%;"></div>
+<div class="content" style="background-color: #27323a;">
+    <h3 style="text-align: center; color: white;">Details Kost Yang Tersedia.</h3>
+    <div class="container">
+        <div class="row justify-content-center">
+            {% for home in homes %}
+            <div class="home col-md-3" style="margin: 10px;">
+                <div class="card" style="width: 18rem; border-radius: 5px;">
+                    {% if home.foto %}
+                    <img src="{{ home.foto.url }}" class="card-img-top" alt="...">
+                    {% else %}
+                    <img src="" alt="No Pic" srcset="">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ home.nama}}</h5>
+                        <p class="card-text">Keterangan : <br> {{home.keterangan}}</p>
+                    </div>
+                    <ul class="list-group list-group-flush" style="font-size: 15px;">
+                        <li class="list-group-item">Harga Per Bulan <br>Rp. {{home.harga}}</li>
+                    </ul>
+                    <div class="card-body" style="font-size: 15px;">
+                        <p>{{home.alamat}}</p>
+                    </div>
+                    <div class="card-body" style="font-size: 15px; ">
+                        <a href="{% url 'update_kost' home.id %}" class="btn btn-sm btn-warning">Update</a>
+                        <a href="#" class="btn btn-sm btn-danger" onclick="hapus({{ home.id }})">Delete</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+    function hapus(id_nama) {
+
+        swal({
+            title: "Apakah Anda Yakin Untuk Menghapus Data Tersebut??",
+            text: "Setelah data di hapus Data tidak bisa di kembalikan kembali!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal({
+                        title: "Data dihapus",
+                        text: "Data Berhasil Di Hapus!",
+                        icon: "success",
+                        button: "Klik disini!",
+                    });
+                    window.location = "/home/delete_kost/"+id_nama;
+                } 
+            });
+    }
+</script>
+
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock %}

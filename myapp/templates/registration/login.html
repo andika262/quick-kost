@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<header class="masthead">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header" style="color: #5d5b6a;">
+                                        LOGIN.
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="" method="post" style="color: #5d5b6a;">
+                                            {% csrf_token %}
+                    
+                                            {{form.as_p}}
+                                            <button class="btn btn-primary"> Masuk </button>
+                                            <a href="{% url 'signup' %}" style="text-align: center;">Create a account</a>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="map" class="map" style="width: 100%;"></div>
+</header>
+
+{% endblock %}
